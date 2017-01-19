@@ -6,24 +6,24 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>2.11</version>
+    <version>2.19</version>
     <relativePath/>
   </parent>
 
-  <artifactId>ccxml</artifactId>
+  <artifactId>cctray-xml</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <properties>
     <!-- TODO FIXME Adjust after release that dropped cc.xml from core -->
-    <jenkins.version>2.38</jenkins.version>
+    <jenkins.version>2.41</jenkins.version>
     <java.level>7</java.level>
     <jenkins-test-harness.version>2.13</jenkins-test-harness.version>
   </properties>
 
-  <name>cc.xml Plugin</name>
+  <name>CCtray XML (cc.xml) Plugin</name>
   <description>This plugin adds the cc.xml functionality removed from Jenkins core in 2.TODO</description>
-  <url>https://wiki.jenkins-ci.org/display/JENKINS/cc.xml+Plugin</url>
+  <url>https://wiki.jenkins-ci.org/display/JENKINS/CCtray+XML+Plugin</url>
 
   <licenses>
     <license>
