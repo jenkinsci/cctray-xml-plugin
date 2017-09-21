@@ -23,9 +23,9 @@
  */
 package org.jenkinsci.plugins.ccxml;
 
-import com.cloudbees.hudson.plugins.folder.Folder;
 import hudson.model.Action;
 import hudson.model.Item;
+import hudson.model.ItemGroup;
 import hudson.model.Job;
 import hudson.model.TopLevelItem;
 import hudson.model.View;
@@ -35,13 +35,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang.StringUtils;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.Stapler;
 
 @Restricted(NoExternalUse.class)
 public class CCXMLAction implements Action {
+
+    public static final String URL_NAME = "cc.xml2";
 
     private transient View view;
 
@@ -61,29 +62,36 @@ public class CCXMLAction implements Action {
 
     @Override
     public String getUrlName() {
-        return "cc.xml2";
+        return URL_NAME;
     }
 
     public View getView() {
         return this.view;
     }
 
+    /**
+     * @return A map containing the items in the view object. If the request
+     * contains a query parameter named "recursive", then folders in the view
+     * are traversed recursively and all items in those folders are returned
+     * as well. The map is keyed by the folder the item is in, with top-level
+     * items having an empty key.
+     */
     public Map<String, Collection<TopLevelItem>> getItems() {
         String recursive = Stapler.getCurrentRequest().getParameter("recursive");
-        if (StringUtils.isNotEmpty(recursive)) {
-            return Collections.unmodifiableMap(getItemsRecursive("", view.getItems()));
-        } else {
+        if (recursive == null) {
             return Collections.singletonMap("", view.getItems());
+        } else {
+            return Collections.unmodifiableMap(getItemsRecursive("", view.getItems()));
         }
     }
 
-    public Map<String, Collection<TopLevelItem>> getItemsRecursive(String namePrefix, Collection<TopLevelItem> items) {
+    private Map<String, Collection<TopLevelItem>> getItemsRecursive(String namePrefix, Collection<TopLevelItem> items) {
         Map<String, Collection<TopLevelItem>> result = new HashMap<>();
         List<TopLevelItem> currentLevelItems = new ArrayList<>();
         for (TopLevelItem i : items) {
-            if (i instanceof Folder) {
-                Folder f = (Folder) i;
-                result.putAll(getItemsRecursive(namePrefix + f.getDisplayName() + "/", f.getItems()));
+            if (i instanceof ItemGroup) {
+                ItemGroup g = (ItemGroup) i;
+                result.putAll(getItemsRecursive(namePrefix + g.getDisplayName() + "/", g.getItems()));
             } else {
                 currentLevelItems.add(i);
             }
