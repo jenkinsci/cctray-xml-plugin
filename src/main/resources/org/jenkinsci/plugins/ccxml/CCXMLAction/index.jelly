@@ -30,17 +30,19 @@ THE SOFTWARE.
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
     <st:contentType value="text/xml;charset=UTF-8" />
     <Projects>
-        <j:forEach var="p" items="${it.view.items}">
-            <j:set var="lb" value="${p.lastCompletedBuild}"/>
-            <j:if test="${lb!=null}">
-                <Project  name="${p.displayName}"
-                          activity="${p.isBuilding() ? 'Building' : 'Sleeping'}"
-                          lastBuildStatus="${it.toCCStatus(p)}"
-                          lastBuildLabel="${lb.number}"
-                          lastBuildTime="${lb.timestampString2}"
-                          webUrl="${app.rootUrl}${p.url}"
-                />
-            </j:if>
+        <j:forEach var="me" items="${it.items}">
+            <j:forEach var="p" items="${me.value}">
+                <j:set var="lb" value="${p.lastCompletedBuild}"/>
+                <j:if test="${lb!=null}">
+                    <Project  name="${me.key + p.displayName}"
+                              activity="${p.isBuilding() ? 'Building' : 'Sleeping'}"
+                              lastBuildStatus="${it.toCCStatus(p)}"
+                              lastBuildLabel="${lb.number}"
+                              lastBuildTime="${lb.timestampString2}"
+                              webUrl="${app.rootUrl}${p.url}"
+                    />
+                </j:if>
+            </j:forEach>
         </j:forEach>
     </Projects>
 </j:jelly>

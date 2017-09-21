@@ -23,12 +23,22 @@
  */
 package org.jenkinsci.plugins.ccxml;
 
+import com.cloudbees.hudson.plugins.folder.Folder;
 import hudson.model.Action;
 import hudson.model.Item;
 import hudson.model.Job;
+import hudson.model.TopLevelItem;
 import hudson.model.View;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
+import org.kohsuke.stapler.Stapler;
 
 @Restricted(NoExternalUse.class)
 public class CCXMLAction implements Action {
@@ -56,6 +66,30 @@ public class CCXMLAction implements Action {
 
     public View getView() {
         return this.view;
+    }
+
+    public Map<String, Collection<TopLevelItem>> getItems() {
+        String recursive = Stapler.getCurrentRequest().getParameter("recursive");
+        if (StringUtils.isNotEmpty(recursive)) {
+            return Collections.unmodifiableMap(getItemsRecursive("", view.getItems()));
+        } else {
+            return Collections.singletonMap("", view.getItems());
+        }
+    }
+
+    public Map<String, Collection<TopLevelItem>> getItemsRecursive(String namePrefix, Collection<TopLevelItem> items) {
+        Map<String, Collection<TopLevelItem>> result = new HashMap<>();
+        List<TopLevelItem> currentLevelItems = new ArrayList<>();
+        for (TopLevelItem i : items) {
+            if (i instanceof Folder) {
+                Folder f = (Folder) i;
+                result.putAll(getItemsRecursive(namePrefix + f.getDisplayName() + "/", f.getItems()));
+            } else {
+                currentLevelItems.add(i);
+            }
+        }
+        result.put(namePrefix, currentLevelItems);
+        return result;
     }
 
     /**
