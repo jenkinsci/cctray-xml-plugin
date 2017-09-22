@@ -32,9 +32,7 @@ import hudson.model.View;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.Stapler;
@@ -76,27 +74,26 @@ public class CCXMLAction implements Action {
      * as well. The map is keyed by the folder the item is in, with top-level
      * items having an empty key.
      */
-    public Map<String, Collection<TopLevelItem>> getItems() {
+    @Restricted(NoExternalUse.class)
+    public Collection<TopLevelItem> getItems() {
         String recursive = Stapler.getCurrentRequest().getParameter("recursive");
         if (recursive == null) {
-            return Collections.singletonMap("", view.getItems());
+            return view.getItems();
         } else {
-            return Collections.unmodifiableMap(getItemsRecursive("", view.getItems()));
+            return Collections.unmodifiableCollection(getItemsRecursive(view.getItems()));
         }
     }
 
-    private Map<String, Collection<TopLevelItem>> getItemsRecursive(String namePrefix, Collection<TopLevelItem> items) {
-        Map<String, Collection<TopLevelItem>> result = new HashMap<>();
-        List<TopLevelItem> currentLevelItems = new ArrayList<>();
+    private Collection<TopLevelItem> getItemsRecursive(Collection<TopLevelItem> items) {
+        List<TopLevelItem> result = new ArrayList<>();
         for (TopLevelItem i : items) {
             if (i instanceof ItemGroup) {
                 ItemGroup g = (ItemGroup) i;
-                result.putAll(getItemsRecursive(namePrefix + g.getDisplayName() + "/", g.getItems()));
+                result.addAll(getItemsRecursive(g.getItems()));
             } else {
-                currentLevelItems.add(i);
+                result.add(i);
             }
         }
-        result.put(namePrefix, currentLevelItems);
         return result;
     }
 

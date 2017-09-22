@@ -23,6 +23,7 @@
  */
 package org.jenkinsci.plugins.ccxml;
 
+import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.xml.XmlPage;
 import hudson.model.FreeStyleProject;
 import hudson.model.Item;
@@ -31,6 +32,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Rule;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.JenkinsRule.WebClient;
 import org.jvnet.hudson.test.MockFolder;
 
 public class CCXMLActionTest {
@@ -67,19 +69,19 @@ public class CCXMLActionTest {
         j.buildAndAssertSuccess(p2);
         xml = getPrimaryViewCCXMLPage("recursive");
         assertXPathNodeCount(xml, getXPathForItem(p1), 1);
-        assertXPathNodeCount(xml, getXPathForItem(f1, p2), 1);
+        assertXPathNodeCount(xml, getXPathForItem(p2), 1);
 
         MockFolder f2 = f1.createProject(MockFolder.class, "folder2");
         FreeStyleProject p3 = f2.createProject(FreeStyleProject.class, "project3");
         j.buildAndAssertSuccess(p3);
         xml = getPrimaryViewCCXMLPage("recursive");
         assertXPathNodeCount(xml, getXPathForItem(p1), 1);
-        assertXPathNodeCount(xml, getXPathForItem(f1, p2), 1);
-        assertXPathNodeCount(xml, getXPathForItem(f1, f2, p3), 1);
+        assertXPathNodeCount(xml, getXPathForItem(p2), 1);
+        assertXPathNodeCount(xml, getXPathForItem(p3), 1);
     }
 
     private XmlPage getPrimaryViewCCXMLPage(String... queryParameters) throws Exception {
-        return j.createWebClient().goToXml("view/all/" + CCXMLAction.URL_NAME + "/?" + String.join("&", queryParameters));
+        return goToXml(j.createWebClient(), "view/all/" + CCXMLAction.URL_NAME + "/?" + String.join("&", queryParameters));
     }
 
     private void assertXPathNodeCount(XmlPage xml, String xPath, int expectedNodes) {
@@ -87,12 +89,14 @@ public class CCXMLActionTest {
         assertEquals("incorrect number of nodes in xpath", expectedNodes, nodes.size());
     }
 
-    private String getXPathForItem(Item... pathToItem) {
-        String[] itemNames = new String[pathToItem.length];
-        for (int i = 0; i < pathToItem.length; i++) {
-            itemNames[i] = pathToItem[i].getDisplayName();
-        }
-        return "/Projects/Project[@name='" + String.join("/", itemNames) + "']";
+    private String getXPathForItem(Item item) {
+        return "/Projects/Project[@name='" + item.getFullDisplayName() + "']";
+    }
+
+    private XmlPage goToXml(WebClient wc, String path) throws Exception {
+        Page page = wc.goTo(path, "text/xml");
+        assertTrue(page instanceof XmlPage);
+        return (XmlPage) page;
     }
 
 }
