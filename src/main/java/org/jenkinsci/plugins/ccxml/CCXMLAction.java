@@ -80,16 +80,15 @@ public class CCXMLAction implements Action {
         if (recursive == null) {
             return view.getItems();
         } else {
-            return Collections.unmodifiableCollection(getItemsRecursive(view.getItems()));
+            return Collections.unmodifiableCollection(getItemsRecursive(view.getItems(), new ArrayList<TopLevelItem>()));
         }
     }
 
-    private Collection<TopLevelItem> getItemsRecursive(Collection<TopLevelItem> items) {
-        List<TopLevelItem> result = new ArrayList<>();
+    private List<TopLevelItem> getItemsRecursive(Collection<TopLevelItem> items, List<TopLevelItem> result) {
         for (TopLevelItem i : items) {
             if (i instanceof ItemGroup) {
                 ItemGroup g = (ItemGroup) i;
-                result.addAll(getItemsRecursive(g.getItems()));
+                getItemsRecursive(g.getItems(), result);
             } else {
                 result.add(i);
             }
