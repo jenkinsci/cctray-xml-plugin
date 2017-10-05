@@ -25,14 +25,11 @@ package org.jenkinsci.plugins.ccxml;
 
 import hudson.model.Action;
 import hudson.model.Item;
-import hudson.model.ItemGroup;
+import hudson.model.Items;
 import hudson.model.Job;
 import hudson.model.TopLevelItem;
 import hudson.model.View;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.Stapler;
@@ -80,20 +77,8 @@ public class CCXMLAction implements Action {
         if (recursive == null) {
             return view.getItems();
         } else {
-            return Collections.unmodifiableCollection(getItemsRecursive(view.getItems(), new ArrayList<TopLevelItem>()));
+            return Items.getAllItems(view.getOwner().getItemGroup(), TopLevelItem.class);
         }
-    }
-
-    private List<TopLevelItem> getItemsRecursive(Collection<TopLevelItem> items, List<TopLevelItem> result) {
-        for (TopLevelItem i : items) {
-            if (i instanceof ItemGroup) {
-                ItemGroup g = (ItemGroup) i;
-                getItemsRecursive(g.getItems(), result);
-            } else {
-                result.add(i);
-            }
-        }
-        return result;
     }
 
     /**
