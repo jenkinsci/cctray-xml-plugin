@@ -25,13 +25,19 @@ package org.jenkinsci.plugins.ccxml;
 
 import hudson.model.Action;
 import hudson.model.Item;
+import hudson.model.Items;
 import hudson.model.Job;
+import hudson.model.TopLevelItem;
 import hudson.model.View;
+import java.util.Collection;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
+import org.kohsuke.stapler.Stapler;
 
 @Restricted(NoExternalUse.class)
 public class CCXMLAction implements Action {
+
+    public static final String URL_NAME = "cc.xml2";
 
     private transient View view;
 
@@ -51,11 +57,28 @@ public class CCXMLAction implements Action {
 
     @Override
     public String getUrlName() {
-        return "cc.xml2";
+        return URL_NAME;
     }
 
     public View getView() {
         return this.view;
+    }
+
+    /**
+     * @return A map containing the items in the view object. If the request
+     * contains a query parameter named "recursive", then folders in the view
+     * are traversed recursively and all items in those folders are returned
+     * as well. The map is keyed by the folder the item is in, with top-level
+     * items having an empty key.
+     */
+    @Restricted(NoExternalUse.class)
+    public Collection<TopLevelItem> getItems() {
+        String recursive = Stapler.getCurrentRequest().getParameter("recursive");
+        if (recursive == null) {
+            return view.getItems();
+        } else {
+            return Items.getAllItems(view.getOwner().getItemGroup(), TopLevelItem.class);
+        }
     }
 
     /**
