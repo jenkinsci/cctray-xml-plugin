@@ -26,9 +26,13 @@ package org.jenkinsci.plugins.ccxml;
 import hudson.model.Action;
 import hudson.model.Item;
 import hudson.model.Job;
+import hudson.model.TopLevelItem;
 import hudson.model.View;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
+import org.kohsuke.stapler.Stapler;
+
+import java.util.Collection;
 
 @Restricted(NoExternalUse.class)
 public class CCXMLAction implements Action {
@@ -51,7 +55,7 @@ public class CCXMLAction implements Action {
 
     @Override
     public String getUrlName() {
-        return "cc.xml2";
+        return "cc.xml";
     }
 
     public View getView() {
@@ -86,5 +90,14 @@ public class CCXMLAction implements Action {
             }
         }
         return "Unknown";
+    }
+
+    @Restricted(NoExternalUse.class) // Jelly
+    public Collection<TopLevelItem> getCCItems() {
+        if (Stapler.getCurrentRequest().getParameter("recursive") != null) {
+            return view.getOwner().getItemGroup().getAllItems(TopLevelItem.class);
+        } else {
+            return view.getItems();
+        }
     }
 }
