@@ -11,13 +11,14 @@
   </parent>
 
   <artifactId>cctray-xml</artifactId>
-  <version>0.1-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <properties>
     <!-- TODO FIXME Adjust after release that dropped cc.xml from core -->
     <jenkins.version>2.171-rc28109.b206e3c58814</jenkins.version>
     <java.level>8</java.level>
+    <revision>1.0</revision>
+    <changelist>-SNAPSHOT</changelist>
   </properties>
 
   <name>CCtray XML (cc.xml) Plugin</name>
@@ -35,6 +36,7 @@
     <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
     <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
+    <tag>${scmTag}</tag>
   </scm>
 
   <repositories>
