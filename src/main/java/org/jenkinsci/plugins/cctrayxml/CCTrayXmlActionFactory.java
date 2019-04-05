@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.jenkinsci.plugins.ccxml;
+package org.jenkinsci.plugins.cctrayxml;
 
 import hudson.Extension;
 import hudson.model.Action;
@@ -35,9 +35,9 @@ import java.util.List;
 
 @Extension
 @Restricted(NoExternalUse.class)
-public class CCXMLActionFactory extends TransientViewActionFactory {
+public class CCTrayXmlActionFactory extends TransientViewActionFactory {
     @Override
     public List<Action> createFor(View v) {
-        return Collections.singletonList((Action) new CCXMLAction(v));
+        return Collections.singletonList((Action) new CCTrayXmlAction(v));
     }
 }

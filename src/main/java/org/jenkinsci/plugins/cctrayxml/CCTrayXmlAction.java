@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.jenkinsci.plugins.ccxml;
+package org.jenkinsci.plugins.cctrayxml;
 
 import hudson.model.Action;
 import hudson.model.Item;
@@ -35,11 +35,11 @@ import org.kohsuke.stapler.Stapler;
 import java.util.Collection;
 
 @Restricted(NoExternalUse.class)
-public class CCXMLAction implements Action {
+public class CCTrayXmlAction implements Action {
 
     private transient View view;
 
-    CCXMLAction(View view) {
+    CCTrayXmlAction(View view) {
         this.view = view;
     }
 
