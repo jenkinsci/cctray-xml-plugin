@@ -15,13 +15,13 @@
   <properties>
     <jenkins.version>2.173</jenkins.version>
     <java.level>8</java.level>
-    <revision>1.0</revision>
+    <revision>1.1</revision>
     <changelist>-SNAPSHOT</changelist>
   </properties>
 
   <name>CCtray XML (cc.xml) Plugin</name>
   <url>https://wiki.jenkins-ci.org/display/JENKINS/CCtray+XML+Plugin</url>
-  <version>1.0</version>
+  <version>${revision}${changelist}</version>
 
   <licenses>
     <license>
@@ -34,7 +34,7 @@
     <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
     <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
-    <tag>cctray-xml-1.0</tag>
+    <tag>${scmTag}</tag>
   </scm>
 
   <repositories>
