@@ -1,7 +1,4 @@
 <?jelly escape-by-default='true'?>
-<!--
-  This view is used to render the installed plugins page.
--->
 <div>
-  This plugin adds the cc.xml functionality removed from Jenkins core in 2.TODO.
+  This plugin provides the cc.xml functionality removed from Jenkins core in 2.173.
 </div>

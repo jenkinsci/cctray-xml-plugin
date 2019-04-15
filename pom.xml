@@ -14,16 +14,15 @@
   <packaging>hpi</packaging>
 
   <properties>
-    <!-- TODO FIXME Adjust after release that dropped cc.xml from core -->
-    <jenkins.version>2.171-rc28109.b206e3c58814</jenkins.version>
+    <jenkins.version>2.173</jenkins.version>
     <java.level>8</java.level>
     <revision>1.0</revision>
     <changelist>-SNAPSHOT</changelist>
   </properties>
 
   <name>CCtray XML (cc.xml) Plugin</name>
-  <description>This plugin adds the cc.xml functionality removed from Jenkins core in 2.TODO</description>
   <url>https://wiki.jenkins-ci.org/display/JENKINS/CCtray+XML+Plugin</url>
+  <version>${revision}${changelist}</version>
 
   <licenses>
     <license>
