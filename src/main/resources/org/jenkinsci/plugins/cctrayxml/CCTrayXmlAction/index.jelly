@@ -36,7 +36,7 @@ THE SOFTWARE.
                 <Project  name="${p.fullDisplayName}"
                           activity="${p.isBuilding() ? 'Building' : 'Sleeping'}"
                           lastBuildStatus="${it.toCCStatus(p)}"
-                          lastBuildLabel="${lb.number}"
+                          lastBuildLabel="${lb.displayName}"
                           lastBuildTime="${lb.timestampString2}"
                           webUrl="${app.rootUrl}${p.url}"
                 />
