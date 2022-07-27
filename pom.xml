@@ -15,14 +15,13 @@
   <properties>
     <jenkins.version>2.346</jenkins.version>
     <java.level>8</java.level>
-    <revision>1.2</revision>
-    <changelist>-SNAPSHOT</changelist>
+    <changelist>999999-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
   </properties>
 
   <name>CCtray XML (cc.xml) Plugin</name>
   <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
-  <version>${revision}${changelist}</version>
+  <version>${changelist}</version>
 
   <licenses>
     <license>
