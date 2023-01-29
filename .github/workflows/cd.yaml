@@ -6,9 +6,6 @@ on:
   check_run:
     types:
       - completed
-  push:
-    branches:
-      - master
 
 jobs:
   maven-cd:
@@ -16,13 +13,3 @@ jobs:
     secrets:
       MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
       MAVEN_TOKEN: ${{ secrets.MAVEN_TOKEN }}
-
-  trigger-release:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    steps:
-      -  uses: ph-fritsche/action-dispatch@v1
-         with:
-           token: ${{ secrets.GITHUB_TOKEN }}
-           ident: cd.yaml
-           payload: '{}'
