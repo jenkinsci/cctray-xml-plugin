@@ -3,5 +3,11 @@
     "extends": [
         "config:base"
     ],
-    "automerge": true
+    "automerge": true,
+    "java": {
+        "labels": [
+            "dependencies",
+            "java"
+        ]
+    }
 }
