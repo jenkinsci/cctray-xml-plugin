@@ -1,5 +1,8 @@
 # CCtray XML (cc.xml) Plugin
 
+[![Jenkins Plugins](https://img.shields.io/jenkins/plugin/v/cctray-xml)](https://plugins.jenkins.io/cctray-xml/)
+[![GitHub commits since latest release (by date) for a branch](https://img.shields.io/github/commits-since/jenkinsci/cctray-xml-plugin/latest/master)](https://github.com/jenkinsci/cctray-xml-plugin/commits/master)
+
 This plugin provides the `cc.xml` functionality for Jenkins views that was part of Jenkins core up to version 2.173.
 
 ## Usage
