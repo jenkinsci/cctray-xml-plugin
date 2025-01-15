@@ -13,8 +13,6 @@
   <packaging>hpi</packaging>
 
   <properties>
-    <jenkins.version>2.440.3</jenkins.version>
-    <java.level>11</java.level>
     <changelist>999999-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
   </properties>
