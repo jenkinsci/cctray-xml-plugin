@@ -37,7 +37,7 @@ import java.util.Collection;
 @Restricted(NoExternalUse.class)
 public class CCTrayXmlAction implements Action {
 
-    private transient View view;
+    private final transient View view;
 
     CCTrayXmlAction(View view) {
         this.view = view;
@@ -67,34 +67,19 @@ public class CCTrayXmlAction implements Action {
      * which is either Success, Failure, Exception, or Unknown.
      */
     public String toCCStatus(Item i) {
-        if (i instanceof Job) {
-            Job j = (Job) i;
-            switch (j.getIconColor()) {
-                case ABORTED:
-                case ABORTED_ANIME:
-                case RED:
-                case RED_ANIME:
-                case YELLOW:
-                case YELLOW_ANIME:
-                    return "Failure";
-                case BLUE:
-                case BLUE_ANIME:
-                    return "Success";
-                case DISABLED:
-                case DISABLED_ANIME:
-                case GREY:
-                case GREY_ANIME:
-                case NOTBUILT:
-                case NOTBUILT_ANIME:
-                    return "Unknown";
-            }
+        if (i instanceof Job j) {
+            return switch (j.getIconColor()) {
+                case ABORTED, ABORTED_ANIME, RED, RED_ANIME, YELLOW, YELLOW_ANIME -> "Failure";
+                case BLUE, BLUE_ANIME -> "Success";
+                case DISABLED, DISABLED_ANIME, GREY, GREY_ANIME, NOTBUILT, NOTBUILT_ANIME -> "Unknown";
+            };
         }
         return "Unknown";
     }
 
     @Restricted(NoExternalUse.class) // Jelly
     public Collection<TopLevelItem> getCCItems() {
-        if (Stapler.getCurrentRequest().getParameter("recursive") != null) {
+        if (Stapler.getCurrentRequest2().getParameter("recursive") != null) {
             return view.getOwner().getItemGroup().getAllItems(TopLevelItem.class);
         } else {
             return view.getItems();
