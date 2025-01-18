@@ -38,6 +38,6 @@ import java.util.List;
 public class CCTrayXmlActionFactory extends TransientViewActionFactory {
     @Override
     public List<Action> createFor(View v) {
-        return Collections.singletonList((Action) new CCTrayXmlAction(v));
+        return Collections.singletonList(new CCTrayXmlAction(v));
     }
 }
