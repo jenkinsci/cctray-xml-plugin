@@ -15,6 +15,7 @@
   <properties>
     <changelist>999999-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
+    <ban-junit4-imports.skip>false</ban-junit4-imports.skip>
   </properties>
 
   <name>CCtray XML (cc.xml) Plugin</name>
