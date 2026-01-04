@@ -22,13 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -->
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core">
-    <script>//<![CDATA[
-Behaviour.addLoadEvent(function() {
-        var rssbar = document.getElementById('rss-bar')
-        if (typeof rssbar !== 'undefined' && rssbar !== null) {
-            rssbar.insertAdjacentHTML('beforeend', ' <a href="cc.xml/" class="yui-button link-button"><img src="${resURL}/plugin/cctray-xml/images/svgs/Icon-txt.svg" class="leading-icon" height="16px"/> cc.xml</a> <a href="cc.xml/?recursive" class="yui-button link-button"><img src="${resURL}/plugin/cctray-xml/images/svgs/Icon-txt.svg" class="leading-icon" height="16px"/> recursive cc.xml</a></a>');
-        }
-});//]]>
-    </script>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler">
+    <st:adjunct includes="org.jenkinsci.plugins.cctrayxml.CCTrayXmlPageDecorator.adjunct" />
 </j:jelly>
