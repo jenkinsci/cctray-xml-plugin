@@ -13,8 +13,12 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +36,7 @@ class CCTrayXmlActionTest {
         @Test
         void testToCCStatusForItem() {
             CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
-            assertEquals("Unknown", cCTrayXmlAction.toCCStatus(i));
+            assertThat(cCTrayXmlAction.toCCStatus(i)).isEqualTo("Unknown");
         }
 
         @ParameterizedTest
@@ -42,7 +46,7 @@ class CCTrayXmlActionTest {
         void testToCCStatusForSuccess(BallColor color) {
             CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
             when(j.getIconColor()).thenReturn(color);
-            assertEquals("Success", cCTrayXmlAction.toCCStatus(j));
+            assertThat(cCTrayXmlAction.toCCStatus(j)).isEqualTo("Success");
         }
 
         @ParameterizedTest
@@ -52,7 +56,7 @@ class CCTrayXmlActionTest {
         void testToCCStatusForFailure(BallColor color) {
             CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
             when(j.getIconColor()).thenReturn(color);
-            assertEquals("Failure", cCTrayXmlAction.toCCStatus(j));
+            assertThat(cCTrayXmlAction.toCCStatus(j)).isEqualTo("Failure");
         }
 
         @ParameterizedTest
@@ -62,66 +66,102 @@ class CCTrayXmlActionTest {
         void testToCCStatusForUnknown(BallColor color) {
             CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
             when(j.getIconColor()).thenReturn(color);
-            assertEquals("Unknown", cCTrayXmlAction.toCCStatus(j));
+            assertThat(cCTrayXmlAction.toCCStatus(j)).isEqualTo("Unknown");
         }
     }
 
     @Test
     void testGetUrlName() {
         CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
-        assertEquals("cc.xml", cCTrayXmlAction.getUrlName());
+        assertThat(cCTrayXmlAction.getUrlName()).isEqualTo("cc.xml");
     }
 
     @Test
     void testGetViewNull() {
         CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
-        assertNull(cCTrayXmlAction.getView());
+        assertThat(cCTrayXmlAction.getView()).isNull();
     }
 
     @Test
     void testGetView() {
         CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(view);
-        assertEquals(view, cCTrayXmlAction.getView());
+        assertThat(cCTrayXmlAction.getView()).isEqualTo(view);
     }
 
     @Test
     void testGetDisplayName() {
         CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
-        assertNull(cCTrayXmlAction.getDisplayName());
+        assertThat(cCTrayXmlAction.getDisplayName()).isNull();
     }
 
     @Test
     void testGetIconFileName() {
         CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
-        assertNull(cCTrayXmlAction.getIconFileName());
+        assertThat(cCTrayXmlAction.getIconFileName()).isNull();
     }
 
     @Nested
     class GetCCItems {
         @Test
-        void testGetCCItemsNonRecursive() {
+        void testGetCCItemsNonRecursiveEmpty() {
             try (MockedStatic<Stapler> utilities = Mockito.mockStatic(Stapler.class)) {
                 CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(view);
                 utilities.when(Stapler::getCurrentRequest2).thenReturn(request);
                 when(request.getParameter("recursive")).thenReturn(null);
-                cCTrayXmlAction.getCCItems();
+
+                when(view.getItems()).thenReturn(Collections.emptyList());
+                Collection<TopLevelItem> result = cCTrayXmlAction.getCCItems();
+                assertThat(result).isEmpty();
                 verify(view).getItems();
             }
         }
 
         @Test
-        void testGetCCItemsRecursive() {
+        void testGetCCItemsNonRecursiveNonEmpty() {
+            try (MockedStatic<Stapler> utilities = Mockito.mockStatic(Stapler.class)) {
+                CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(view);
+                utilities.when(Stapler::getCurrentRequest2).thenReturn(request);
+                when(request.getParameter("recursive")).thenReturn(null);
+
+                List<TopLevelItem> items = List.of(mock(TopLevelItem.class));
+                when(view.getItems()).thenReturn(items);
+                Collection<TopLevelItem> result = cCTrayXmlAction.getCCItems();
+                assertThat(result).hasSize(1);
+                assertThat(result).isEqualTo(items);
+            }
+        }
+
+        @Test
+        void testGetCCItemsRecursiveEmpty() {
             try (MockedStatic<Stapler> utilities = Mockito.mockStatic(Stapler.class)) {
                 CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(view);
                 utilities.when(Stapler::getCurrentRequest2).thenReturn(request);
                 when(request.getParameter("recursive")).thenReturn("true");
                 when(view.getOwner()).thenReturn(owner);
                 when(owner.getItemGroup()).thenReturn(itemGroup);
-                cCTrayXmlAction.getCCItems();
+
+                when(itemGroup.getAllItems(TopLevelItem.class)).thenReturn(Collections.emptyList());
+                Collection<TopLevelItem> result = cCTrayXmlAction.getCCItems();
+                assertThat(result).isEmpty();
                 verify(itemGroup).getAllItems(TopLevelItem.class);
             }
         }
+
+        @Test
+        void testGetCCItemsRecursiveNonEmpty() {
+            try (MockedStatic<Stapler> utilities = Mockito.mockStatic(Stapler.class)) {
+                CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(view);
+                utilities.when(Stapler::getCurrentRequest2).thenReturn(request);
+                when(request.getParameter("recursive")).thenReturn("true");
+                when(view.getOwner()).thenReturn(owner);
+                when(owner.getItemGroup()).thenReturn(itemGroup);
+
+                List<TopLevelItem> items = List.of(mock(TopLevelItem.class));
+                when(itemGroup.getAllItems(TopLevelItem.class)).thenReturn(items);
+                Collection<TopLevelItem> result = cCTrayXmlAction.getCCItems();
+                assertThat(result).hasSize(1);
+                assertThat(result).isEqualTo(items);
+            }
+        }
     }
-
-
 }
