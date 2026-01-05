@@ -1,6 +1,12 @@
 package org.jenkinsci.plugins.cctrayxml;
 
-import hudson.model.*;
+import hudson.model.BallColor;
+import hudson.model.Item;
+import hudson.model.ItemGroup;
+import hudson.model.Job;
+import hudson.model.TopLevelItem;
+import hudson.model.View;
+import hudson.model.ViewGroup;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
