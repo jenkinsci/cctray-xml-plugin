@@ -40,9 +40,10 @@ class CCTrayXmlActionTest {
         }
 
         @ParameterizedTest
-        @EnumSource(names = {
-                "BLUE", "BLUE_ANIME"
-        })
+        @EnumSource(
+                value = BallColor.class,
+                names = {"BLUE", "BLUE_ANIME"}
+        )
         void testToCCStatusForSuccess(BallColor color) {
             CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
             when(j.getIconColor()).thenReturn(color);
@@ -50,9 +51,10 @@ class CCTrayXmlActionTest {
         }
 
         @ParameterizedTest
-        @EnumSource(names = {
-                "ABORTED", "ABORTED_ANIME", "RED", "RED_ANIME", "YELLOW", "YELLOW_ANIME"
-        })
+        @EnumSource(
+                value = BallColor.class,
+                names = {"ABORTED", "ABORTED_ANIME", "RED", "RED_ANIME", "YELLOW", "YELLOW_ANIME"}
+        )
         void testToCCStatusForFailure(BallColor color) {
             CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
             when(j.getIconColor()).thenReturn(color);
@@ -60,9 +62,10 @@ class CCTrayXmlActionTest {
         }
 
         @ParameterizedTest
-        @EnumSource(names = {
-                "DISABLED", "DISABLED_ANIME", "GREY", "GREY_ANIME", "NOTBUILT", "NOTBUILT_ANIME"
-        })
+        @EnumSource(
+                value = BallColor.class,
+                names = {"DISABLED", "DISABLED_ANIME", "GREY", "GREY_ANIME", "NOTBUILT", "NOTBUILT_ANIME"}
+        )
         void testToCCStatusForUnknown(BallColor color) {
             CCTrayXmlAction cCTrayXmlAction = new CCTrayXmlAction(null);
             when(j.getIconColor()).thenReturn(color);
