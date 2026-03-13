@@ -27,13 +27,14 @@ import hudson.Extension;
 import hudson.model.Action;
 import hudson.model.TransientViewActionFactory;
 import hudson.model.View;
+import jenkins.YesNoMaybe;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 
 import java.util.Collections;
 import java.util.List;
 
-@Extension
+@Extension(dynamicLoadable = YesNoMaybe.YES)
 @Restricted(NoExternalUse.class)
 public class CCTrayXmlActionFactory extends TransientViewActionFactory {
     @Override
