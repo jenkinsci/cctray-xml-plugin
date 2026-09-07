@@ -8,7 +8,7 @@ jobs:
   trigger-release:
     runs-on: ubuntu-latest
     steps:
-      -  uses: ph-fritsche/action-dispatch@v1
+      -  uses: ph-fritsche/action-dispatch@d2d2f5ace087c13e9d2ea162df1a7ba85730fb47 # v1
          with:
            token: ${{ secrets.GITHUB_TOKEN }}
            ident: cd.yaml
